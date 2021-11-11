@@ -1,0 +1,27 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: streamlitspacy-backend
+spec:
+  type: ClusterIP
+  selector:
+    app: streamlit
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8501
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: streamlit-spacy
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              serviceName: streamlitspacy-backend
+              servicePort: 80
+            path: /
